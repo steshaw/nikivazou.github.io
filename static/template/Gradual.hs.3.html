@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<title>/Users/niki/liquidtypes/liquidhaskell/tests/gradual/pos/Gradual.hs</title>
+</head>
+<head>
+<link type='text/css' rel='stylesheet' href='liquid.css' />
+    <script src="util.js"></script>  
+<style>
+.yellowbutton {
+    background-color: #FFFF00;
+    cursor: pointer;
+    type: button;
+}
+</style>    
+</head>
+
+<body>
+<hr>
+<ul>
+<li><a href="Gradual.hs.html">Step 1</a>: Select all the relevant predicates.</li>
+<li><a href="Gradual.hs.2.html">Step 2</a>: Check a gradual solution. </li>
+<li><a href="Gradual.hs.3.html">Step 3</a>: Find static solution. </li>
+</ul>
+<par>
+Press Find search for mathing solutions
+</par>
+<button type="button">Find</button>
+<pre><span class=hs-linenum> 1: </span><a class=annot href="#"><span class=annottext>GHC.Types.Module</span><span class='hs-keyword'>module</span></a> <span class='hs-conid'>Gradual</span> <span class='hs-keyword'>where</span>
+<span class=hs-linenum> 2: </span> 
+<span class=hs-linenum> 3: </span><span class='hs-keyword'>{-@</span> <span class='hs-conid'>LIQUID</span> <span class='hs-str'>"--gradual"</span>        <span class='hs-keyword'>@-}</span>
+<span class=hs-linenum> 4: </span><span class='hs-keyword'>{-@</span> <span class='hs-conid'>LIQUID</span> <span class='hs-str'>"--savequery"</span>      <span class='hs-keyword'>@-}</span>
+<span class=hs-linenum> 5: </span><span class='hs-keyword'>{-@</span> <span class='hs-conid'>LIQUID</span> <span class='hs-str'>"--ginteractive"</span>   <span class='hs-keyword'>@-}</span>
+<span class=hs-linenum> 6: </span> 
+<span class=hs-linenum> 7: </span><span class='hs-keyword'>{-@</span> <span class='hs-keyword'>safe</span> <span class='hs-keyglyph'>::</span> <span class='hs-keyword'>{v:</span><span class='hs-conid'>Int</span> <span class='hs-keyword'>| <button type="button" id="button-1" onclick="myFunction(1)" class="yellowbutton">??</button> }</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Int</span> <span class='hs-keyword'>@-}</span>
+<span class=hs-linenum> 8: </span><span class='hs-keyword'>safe</span>   <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Int</span> <span class='hs-keyglyph'>-&gt;</span>  <span class='hs-conid'>Int</span>
+<span class=hs-linenum> 9: </span><a class=annot href="#"><span class=annottext>GHC.Types.Int -&gt; GHC.Types.Int</span><span class='hs-keyword'>safe</span></a> <a class=annot href="#"><span class=annottext>GHC.Types.Int</span><span class='hs-varid'>x</span></a> <span class='hs-keyglyph'>=</span> <a class=annot href="#"><span class=annottext>GHC.Types.Bool</span><span class='hs-keyword'>if</span></a> <a class=annot href="#"><span class=annottext>{v : () -&gt; GHC.Types.Bool | v == Gradual.foo}</span><span class='hs-varid'>foo</span></a> <span class='hs-conid'>()</span> <span class='hs-keyword'>then</span> <a class=annot href="#"><span class=annottext>{v : {v : GHC.Types.Int | v &lt; 0} -&gt; GHC.Types.Int | v == Gradual.bar1}</span><span class='hs-varid'>bar1</span></a> <div class="dropdown"><span class="dropbtn"><span class='hs-varid' id="src-1-1">x</span></span><select multiple class="dropdown-content" id="select-1-1">
+ <option selected>true</option>
+ <option selected>0 < x</option>
+ <option selected>x <= 0</option>
+ <option>x <= 0</option></select></div> <span class='hs-keyword'>else</span> <a class=annot href="#"><span class=annottext>{v : {v : GHC.Types.Int | v == 0} -&gt; GHC.Types.Int | v == Gradual.bar2}</span><span class='hs-varid'>bar2</span></a> <div class="dropdown"><span class="dropbtn"><span class='hs-varid' id="src-1-2">x</span></span><select class="dropdown-content" id="select-1-2">
+ <option selected>true</option>
+ <option>0 < x</option>
+ <option>x <= 0</option>
+ <option>x <= 0</option></select></div>
+<span class=hs-linenum>10: </span> 
+<span class=hs-linenum>11: </span><span class='hs-keyword'>{-@</span> <span class='hs-varid'>foo</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>()</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-keyword'>{v:</span><span class='hs-conid'>Bool</span> <span class='hs-keyword'>| true }</span> <span class='hs-keyword'>@-}</span> 
+<span class=hs-linenum>12: </span><span class='hs-definition'>foo</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>()</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span> 
+<span class=hs-linenum>13: </span><a class=annot href="#"><span class=annottext>() -&gt; GHC.Types.Bool</span><span class='hs-definition'>foo</span></a> <span class='hs-keyglyph'>=</span> <a class=annot href="#"><span class=annottext>{v : (GHC.Classes.IP [GHC.Types.Char] GHC.Stack.Types.CallStack) | v == $dIP_a1zN}</span><span class='hs-varid'>undefined</span></a> 
+<span class=hs-linenum>14: </span>
+<span class=hs-linenum>15: </span><span class='hs-keyword'>{-@</span> <span class='hs-varid'>bar1</span> <span class='hs-keyglyph'>::</span> <span class='hs-keyword'>{v:</span><span class='hs-conid'>Int</span> <span class='hs-keyword'>| v &lt; 0 }</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Int</span> <span class='hs-keyword'>@-}</span>
+<span class=hs-linenum>16: </span><span class='hs-definition'>bar1</span>   <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Int</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Int</span> 
+<span class=hs-linenum>17: </span><a class=annot href="#"><span class=annottext>{v : GHC.Types.Int | v &lt; 0} -&gt; GHC.Types.Int</span><span class='hs-definition'>bar1</span></a> <a class=annot href="#"><span class=annottext>{v : GHC.Types.Int | v &lt; 0}</span><span class='hs-varid'>x</span></a> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>x</span> 
+<span class=hs-linenum>18: </span>
+<span class=hs-linenum>19: </span><span class='hs-keyword'>{-@</span> <span class='hs-varid'>bar2</span> <span class='hs-keyglyph'>::</span> <span class='hs-keyword'>{v:</span><span class='hs-conid'>Int</span> <span class='hs-keyword'>| v = 0}</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Int</span> <span class='hs-keyword'>@-}</span>
+<span class=hs-linenum>20: </span><span class='hs-definition'>bar2</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Int</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Int</span> 
+<span class=hs-linenum>21: </span><a class=annot href="#"><span class=annottext>{v : GHC.Types.Int | v == 0} -&gt; GHC.Types.Int</span><span class='hs-definition'>bar2</span></a> <a class=annot href="#"><span class=annottext>{v : GHC.Types.Int | v == 0}</span><span class='hs-varid'>x</span></a> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>x</span></pre>
+</body>
+</html>
