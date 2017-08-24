@@ -36,11 +36,11 @@ I need user interation.
 
 GUI
 - Presenting & Filtering 
-I want to present all the candidates to the user, as in Gradual.hs.html (press the ? button twice) so that the user can filter out some (non-sensible) solutions. 
+I want to present all the candidates to the user, as in [Gradual.hs.html](https://nikivazou.github.io/static/template/Gradual.hs.html) (press the ? button twice) so that the user can filter out some (non-sensible) solutions. 
 
 
 - User Solution Selection
-Also, I want the user to be able to select a Solution from the Candidates as Gradual.hs.2.html and press a button to check the solution with `checkSolution`.
+Also, I want the user to be able to select a Solution from the Candidates as [Gradual.hs.2.html](https://nikivazou.github.io/static/template/Gradual.hs.2.html) and press a button to check the solution with `checkSolution`.
 
 
 - Matching solution
