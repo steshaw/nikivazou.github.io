@@ -121,35 +121,44 @@ MathJax.Hub.Config({
 <div id='page-wrapper'>
 <div id='page'>
 
-<section id="artifact-for-towards-complete-specification-and-verification-with-smt-solvers" class="level1">
-<h1>Artifact for &quot;Towards Complete Specification and Verification with SMT Solvers&quot;</h1>
-<p><br> <br> <br></p>
-<section id="examples-for-the-paper" class="level2">
-<h2>Examples for the paper</h2>
-<p>We provide interactive Liquid Haksell code for the examples presented in Sections 2 and 3 of the paper. The Liquid Haskell queries are checked by sending requests to the Liquid Haskell server hosted at <a href="http://goto.ucsd.edu:8090/" class="uri">http://goto.ucsd.edu:8090/</a>.</p>
-<ul>
-<li>Section 2: <a href="Overview.html">html file for Overview</a></li>
-<li>Section 3: <a href="NaturalDeduction.html">html file for Natural Deduction</a></li>
-</ul>
-<p><br> <br> <br></p>
-</section>
-<section id="install-liquid-haskell" class="level2">
-<h2>Install Liquid Haskell</h2>
-<p>You can install Liquid Haskell using cabal</p>
-<pre><code>cabal install liquidhaskell</code></pre>
-<p>or from the github source following the <a href="https://github.com/ucsd-progsys/liquidhaskell/blob/develop/INSTALL.md%5D">installation instructions</a> in the repo.</p>
-<p><br> <br> <br></p>
-</section>
-<section id="run-the-benchmark-suite" class="level2">
-<h2>Run the benchmark suite</h2>
-<p>To run the benchmark suite there are three options.</p>
-<ul>
-<li><p>Install the <a href="https://github.com/ucsd-progsys/liquidhaskell/tree/popl18">popl18</a> repo branch</p></li>
-<li><p>User docker</p></li>
-<li><p>User VM</p></li>
-</ul>
-</section>
-</section>
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">module Lists where 
+
+import Prelude hiding ((++), length)
+{-@ LIQUID "--exact-data-con"                      @-}
+{-@ LIQUID "--automatic-instances=liquidinstances" @-}
+
+import Language.Haskell.Liquid.ProofCombinators
+
+data L a = N | C a (L a)
+
+{-@ data L [length] @-}
+
+length :: L a -> Int 
+{-@ length :: x:L a -> {v:Nat | v == length x} @-}
+{-@ measure length @-}
+length N        = 0 
+length (C _ xs) = 1 + length xs 
+
+{-@ infix   ++ @-}
+{-@ reflect ++ @-}
+N        ++ ys = ys 
+(C x xs) ++ ys = C x (xs ++ ys)
+
+
+{-@ lenAppend :: xs : L a -> ys : L a 
+              -> { length ( xs ++ ys ) = length xs + length ys } @-}
+lenAppend :: L a -> L a -> Proof
+lenAppend N        _  = trivial 
+lenAppend (C x xs) ys = lenAppend xs ys</div>
+</div>
 
 </div>
 </div>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Programming with Refinement Types</title>
+
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/rust-book-slides.css">
+    <link rel="stylesheet" type="text/css" href="./css/editor-slides.css">
+
+   
+    <style type="text/css">code{white-space: pre;}
+
+      .slideonly {
+        display: none;
+      }
+
+      .dropdown-menu {
+          min-width: 0px;
+      }
+      
+      #checker-status {
+          width: 30;
+          height: 20;
+          padding-top: 2px;
+          padding-right: 10px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index:99;
+      }
+    </style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+
+
+<!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->
+<script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="./js/angular/angular.js"></script>
+<script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      True: "\\mathit{True}", 
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}", 
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3]
+  }    
+  }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+</head>
+
+<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+
+       <div id="checker-status">
+         <!-- Verifying ... -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
+                ng-show="isChecking" ng-click="verifySource()">
+          <span class="glyphicon glyphicon-hourglass"></span>
+         </button>
+
+        
+         <!-- Safe -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; color:green; z-index:1"
+                 ng-show="isSafe">
+           <span class="glyphicon glyphicon-ok"></span>
+         </button>
+
+         <div class="dropdown" ng-show="isBad">
+             <button class="btn btn-xs btn-link dropdown-toggle"
+                     type="button"
+                     id="errorblockdropdown"
+                     data-toggle="dropdown"
+                     style="font-size:30px; color:red; z-index:1">
+               <span class="glyphicon glyphicon-remove" style="vertical-align:middle"></span><font size="4">{{errorBlocks.length}}</font>
+               </span>
+             </button>
+             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+               <li ng-repeat="err in errorBlocks">
+                 <a tabindex="-1" ng-href="#program-{{err.data}}">{{err.index}}</a>
+               </li>
+             </ul>
+         </div>
+       </div>
+       
+
+<div id='page-wrapper'>
+<div id='page'>
+
+<section id="natural-deduction-on-liquid-haskell" class="level2">
+<h2>Natural Deduction on Liquid Haskell</h2>
+<p>We illustrate the encoding natural deduction in Liquid Haskell. It is a formed verions of § 3.3 of <a href="https://nikivazou.github.io/static/popl18/refinement-reflection.pdf">&quot;Towards Complete Specification and Verification with SMT&quot;</a>.</p>
+</section>
+<section id="prelude" class="level2">
+<h2>Prelude</h2>
+<p>To use Liquid Haskell as a higher order theorem prover you need to enable the <code>higherorder</code> flag (for efficiency it is off by default) and import the <a href="https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs"><code>ProofCombinators</code></a> library.</p>
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">module NaturalDeduction where
+
+{-@ LIQUID "--higherorder"    @-}
+{-@ LIQUID "--exact-data-con" @-}
+
+import Language.Haskell.Liquid.ProofCombinators
+
+import Prelude hiding ((++), length)
+{-@ infix   ++ @-}</div>
+</div>
+
+</section>
+<section id="natural-deduction-as-type-derivation" class="level2">
+<h2>Natural Deduction as Type Derivation</h2>
+<p>We illustrate the mapping from natural deduction rules to typing rules in the below figure which uses typing judgments to express Gentzen’s proof of the proposition</p>
+<br>
+<center>
+<p><code>ϕ ≡ (∃x.∀y.(p x y)) ⇒ (∀y.∃x.(p x y))</code></p>
+<p><img src="http://goto.ucsd.edu/~nvazou/images/reflect-figure4.png" height="200" align="middle" /></p>
+</center>
+<p><br></p>
+<p>Read bottom-up, the derivation provides a proof of <code>ϕ</code>. Read top-down, it constructs a proof of the formula as the term <code>λe y.case e of {(x, ex ) → (x, ex y)}</code>. This proof term corresponds directly to the following Haskell expression that typechecks with type <code>ϕ</code>.</p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">{-@ exAll :: p:(a -> a -> Bool)
+          -> (x::a, y:a -> {v:Proof | p x y}) 
+          -> y:a 
+          -> (x::a, {v:Proof | p x y}) @-}
+exAll :: (a -> a -> Bool) -> (a, a -> Proof) -> a -> (a, Proof) 
+exAll p = \e y -> case e of {(x, ex) -> (x, ex y)}</div>
+</div>
+
+</section>
+<section id="smt-aided-proofs" class="level2">
+<h2>SMT-aided proofs</h2>
+<p>The great benefit of using refinement types to encode natural deduction is that quantifier-free portions of the proof can get automated via SMTs. For every quantifier-free proposition <code>ϕ</code>, you can convert between <code>{ϕ}</code>, where <code>ϕ</code> is treated as an SMT-proposition and <code>ϕ</code>, where <code>ϕ</code> is treated as a type; and this conversion goes both ways. For example, let <code>ϕ ≡ p ∧ (q||r)</code>. Then flatten converts from <code>ϕ</code> to <code>{ϕ}</code> and expand the other way, while this conversion is SMT-aided.</p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">{-@ flatten :: p:Bool -> q:Bool -> r:Bool 
+           -> ({v:Bool | p }, Either {v:Bool | q } {v:Bool | r}) 
+           -> {proof:Bool | p && (q || r)} @-}
+flatten :: Bool -> Bool -> Bool -> (Bool, Either Bool Bool) -> Bool 
+flatten _ _ _ (pf, Left  qf) = pf && qf
+flatten _ _ _ (pf, Right rf) = pf && rf
+
+{-@ expand :: p:Bool -> q:Bool -> r:Bool 
+           -> {proof:Bool | p && (q || r)} 
+           -> ({v:Bool | p }, Either {v:Bool | q } {v:Bool | r}) @-}
+expand :: Bool -> Bool -> Bool -> Bool -> (Bool, Either Bool Bool) 
+expand p q r proof | q = (proof, Left  proof) 
+expand p q r proof | r = (proof, Right proof) </div>
+</div>
+
+</section>
+<section id="distributing-quantifiers" class="level2">
+<h2>Distributing Quantifiers</h2>
+<p>Next, we construct the proof terms needed to prove two logical properties: that existentials distribute over disjunctions and foralls over conjunctions, i.e.</p>
+<br>
+<center>
+<code>ϕ∃ ≡ (∃x.p x ∨ q x) ⇒ ((∃x.p x) ∨ (∃x.q x))</code> (1) <br> <code>ϕ∀ ≡ (∀x.p x ∧ q x) ⇒ ((∀x.p x) ∧ (∀x.q x))</code> (2)
+</center>
+<p><br></p>
+<p>The specification of these properties requires nesting quantifiers inside connectives and vice versa. The proof of <code>ϕ∃</code> (1) proceeds by existential case splitting and introduction:</p>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">{-@ exDistOr :: p : _ -> q : _
+             -> (x :: a ,Either {v:b | p x } {v:c | q x })
+             -> Either (x::a , {v:b | p x }) (x::a , {v:c | q x }) @-}
+exDistOr :: (a -> Bool) -> (a -> Bool) -> (a, Either c d) -> Either (a, c) (a,d)
+exDistOr _ _ (x , Left px ) = Left (x , px )
+exDistOr _ _ (x , Right qx ) = Right (x , qx )</div>
+</div>
+
+<p>Dually, we prove <code>ϕ∀</code> (2) via a λ-abstraction and case spitting inside the conjunction pair:</p>
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">{-@ allDistAnd :: p:_ -> q:_ 
+               -> (x:a -> ({v:b | p x }, {v:c| q x}))
+               -> ((x:a -> {v:b | p x }), (x:a -> {v:c| q x })) @-}
+allDistAnd :: (a -> Bool) -> (a -> Bool) -> (a -> (b,c)) -> (a -> b, a -> c)
+allDistAnd _ _ andx = 
+    ((\x -> case andx x of (px, _ ) -> px)
+    ,(\x -> case andx x of (_ , qx) -> qx) 
+    )</div>
+</div>
+
+<p>The above proof term corresponds to its natural deduction proof derivation but using SMT-aided verificaiton can get simplified to the following</p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">{-@ allDistAnd' :: p:_ -> q:_ 
+               -> (x:a -> ({v:Bool | p x }, {v:Bool| q x}))
+               -> ((x:a -> {v:Bool | p x }), (x:a -> {v:Bool| q x })) @-}
+allDistAnd' :: (a -> Bool) -> (a -> Bool) -> (a -> (Bool,Bool)) 
+            -> (a -> Bool, a -> Bool)
+allDistAnd' _ _ andx = (pf, pf)
+  where pf x = case andx x of (px,py) -> px && py</div>
+</div>
+
+</section>
+<section id="properties-of-user-defined-datatypes" class="level2">
+<h2>Properties of User Defined Datatypes</h2>
+<p>As <code>ϕ</code> can describe properties of data types like lists, we can prove properties of such types, e.g. that for every list <code>xs</code>, if there exists a list <code>ys</code> such that <code>xs == ys ++ ys</code> ,then <code>xs</code> has even length.</p>
+<br>
+<center>
+<code>ϕ ≡ ∀xs.((∃ys. xs = ys ++ ys) ⇒ (∃n.length xs = n + n))</code>
+</center>
+<p><br></p>
+<p>The proof (<code>evenLen</code>) proceeds by existential elimination and introduction. and uses the <code>lenAppend</code> lemma.</p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">{-@ evenLen :: xs:_ 
+            -> (ys::L a, {v:Proof |  xs = ys ++ ys }) 
+            -> (n ::Int, {v:Proof | length xs = n + n }) @-}
+evenLen :: L a -> (L a, Proof) -> (Int, Proof)
+evenLen xs (ys, pf) = (length ys, lenAppend ys ys &&& pf )</div>
+</div>
+
+<p>The <code>lenAppend</code> lemma is proved by induction on the input list and PLE to automate equational reasoning.</p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">{-@ LIQUID "--automatic-instances=liquidinstances" @-}
+{-@ lenAppend :: xs : L a -> ys : L a 
+              -> { length ( xs ++ ys ) = length xs + length ys } @-}
+lenAppend :: L a -> L a -> Proof
+lenAppend N        _  = trivial 
+lenAppend (C x xs) ys = lenAppend xs ys</div>
+</div>
+
+<p>Lists in the above proof are used defined inductive data types whose <code>length</code> is descreasing at each recursive call.</p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">data L a = N | C a (L a)
+{-@ data L [length] a = N | C a (L a) @-}
+
+length :: L a -> Int 
+{-@ length :: x:L a -> {v:Nat | v == length x} @-}
+{-@ measure length @-}
+length N        = 0 
+length (C _ xs) = 1 + length xs </div>
+</div>
+
+The appending function <code>(++)</code> is Haskell's usual append reflected in the logic.
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">{-@ reflect ++ @-}
+N        ++ ys = ys 
+(C x xs) ++ ys = C x (xs ++ ys)</div>
+</div>
+
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ natinduction :: p:(Nat-> Bool) -> PAnd {v:Proof | p 0} (n:Nat -> {v:Proof | p (n-1)} -> {v:Proof | p n})
+                 -> n:Nat -> {v:Proof | p n}  @-}
+natinduction :: (Int-> Bool) -> PAnd Proof (Int -> Proof -> Proof)-> Int -> Proof 
+natinduction p (PAnd p0 pi) n  
+  | n == 0    = p0 
+  | otherwise = pi n (natinduction p (PAnd p0 pi) (n-1))
+
+
+-- Example of proving with natinduction 
+
+{-@ prop :: n:Nat -> {godelProp n} @-} 
+prop :: Int -> Proof 
+prop n = natinduction godelProp (PAnd baseCase indCase) n
+
+
+{-@ assume indCase :: n:Nat -> {v:Proof | godelProp (n-1)} -> {v:Proof | godelProp n} @-} 
+indCase :: Int -> Proof -> Proof 
+indCase _ _ = ()
+    
+{-@ assume baseCase :: {godelProp 0} @-} 
+baseCase :: Proof 
+baseCase = ()
+
+{-@ reflect godelProp@-}
+godelProp :: Int -> Bool 
+godelProp n = n == n    </div>
+</div>
+
+</section>
+
+</div>
+</div>
+
+
+
+<!-- JavaScript below! ============================================== -->
+
+  <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="./js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/mode-haskell.js"  type="text/javascript" charset="utf-8"></script>
+  <script src="./js/liquid/tooltip.js"></script> 
+  <script src="./js/liquid/annot.js"></script> 
+  <script src="./js/liquid/config.js"></script> 
+  <script src="./js/liquid/liquid.js"></script>
+
+  <script type="text/javascript">
+    var queryServerURL = "http://goto.ucsd.edu:8090/" ;
+  </script>
+  
+  <!-- rust nav JS --> 
+  <script type="text/javascript">
+    window.playgroundUrl = "";
+  </script>
+  
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+
+ document.getElementById("toggle-nav").onclick = toggleNav;
+
+  function toggleNav() {
+    var toc         = document.getElementById("toc");
+    var pagewrapper = document.getElementById("page-wrapper");
+    var status      = document.getElementById("checker-status");
+
+    toggleClass(toc,         "mobile-hidden");
+    // toggleClass(status,      "mobile-hidden");
+    toggleClass(pagewrapper, "mobile-hidden");
+  };
+
+  function toggleClass(el, className) {
+     // from http://youmightnotneedjquery.com/
+     if (el.classList) {
+       el.classList.toggle(className);
+     } else {
+       var classes = el.className.split(' ');
+       var existingIndex = classes.indexOf(className);
+
+       if (existingIndex >= 0) {
+         classes.splice(existingIndex, 1);
+       } else {
+         classes.push(className);
+       }
+       el.className = classes.join(' ');
+     }
+  }
+});
+</script>
+</body>
+</html>
