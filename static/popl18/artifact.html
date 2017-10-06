@@ -1,57 +1,258 @@
-<h1 id="artifact-for-towards-complete-verification-via-smt">Artifact for &quot;Towards Complete Verification via SMT&quot;</h1>
-<p>You can run Liquid Haskell online, using a docker VM, <em>or</em> build it from source.</p>
-<h2 id="option-1-online-server">OPTION 1: Online Server</h2>
-<p>We provide interactive Liquid Haksell code for the examples presented in Sections 2 and 3 of the paper. The Liquid Haskell queries are checked by sending requests to the Liquid Haskell server hosted at <a href="http://goto.ucsd.edu:8090/" class="uri">http://goto.ucsd.edu:8090/</a>.</p>
+<h1>Artifact for "Towards Complete Verification via SMT"</h1>
+
+<p>The paper presents how we extended Liquid Haskell 
+to allow complete verification via SMTs.
+You can run Liquid Haskell online, 
+using a docker VM, <em>or</em> 
+build it from source.
+This artifact describes</p>
+
+<ul>
+<li><a href="#online">Online Demo:</a> How to run online the examples presented in the paper. </li>
+<li><a href="#benchmarks">Running Benchmarks:</a> How to run the banchmarks of Table 1 of the paper.</li>
+<li><a href="#source-files">Source Files:</a> How to check the source files of the benchmarks of Table 1.</li>
+</ul>
+
+<h2><a name="online"></a> Online Demo</h2>
+
+<p>The examples presented in the paper (Sections 2 and 3) can be viewed 
+and checked at the interactive, online demo links below: </p>
+
+<p>We provide interactive Liquid Haksell code for 
+the examples presented in Sections 2 and 3 of the paper. 
+The Liquid Haskell queries are checked by sending requests to 
+the Liquid Haskell server hosted at <a href="http://goto.ucsd.edu:8090/">http://goto.ucsd.edu:8090/</a>.</p>
+
 <ul>
 <li>§2 Overview: <a href="http://goto.ucsd.edu/~nvazou/popl18/_site/Overview.html">.html file</a>, <a href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/ple/Overview.lhs">.lhs source</a></li>
-<li>§2.5 Laws for Lists: <a href="http://goto.ucsd.edu/~nvazou/popl18/_site/LawsForLists.html">.html file</a>, <a href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/ple/LawsForLists.lhs">.lhs source</a></li>
+<li>§2.5 Laws for Lists: <a href="http://goto.ucsd.edu/~nvazou/popl18/_site/LawsForLists.html">.html file</a>, <a href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/ple/LawsForLists.lhs">.lhs source</a> </li>
 <li>§3.3 Natural Deduction: <a href="http://goto.ucsd.edu/~nvazou/popl18/_site/NaturalDeduction.html">.html file</a>, <a href="https://github.com/ucsd-progsys/liquidhaskell/blob/popl18/benchmarks/popl18/ple/NaturalDeduction.lhs">lhs source</a></li>
 </ul>
-<h2 id="option-2-docker-build">Option 2: Docker Build</h2>
+
+<h2><a name="benchmarks"></a> Running Benchmarks</h2>
+
+<p>To run the benchmarks, you need to</p>
+
+<ol>
+<li><strong>Get LiquidHaskell</strong> via Docker or Source. </li>
+<li><strong>Run</strong> the individual benchmarks.</li>
+</ol>
+
+<h3>Build Option 1: Docker</h3>
+
 <ul>
-<li><p>Please install <code>docker</code>.</p></li>
+<li><p>Please install <code>docker</code>. </p></li>
 <li><p>Then, you can run the tests:</p>
-<pre><code>$ docker run -it parfunc/popl18-lh-prover-artifact</code></pre>
+
+<p><code>
+$ docker run -it parfunc/popl18-lh-prover-artifact
+</code></p>
+
 <p>Or open an interactive shell:</p>
-<pre><code>$ docker run -it parfunc/popl18-lh-prover-artifact bash</code></pre></li>
+
+<p><code>
+$ docker run -it parfunc/popl18-lh-prover-artifact bash
+</code></p></li>
 </ul>
-<h2 id="option-3-source-build">Option 3: Source Build</h2>
-<p>Finally, you can install Liquid Haskell on your own machine from github.</p>
+
+<h3>Build Option 2: Source</h3>
+
+<p>You can install Liquid Haskell on your own machine from github. </p>
+
 <ul>
 <li><p><strong>Step 1:</strong> Download &amp; Install:</p>
-<ol style="list-style-type: decimal">
+
+<ol>
 <li><p>Install <code>z3</code> from <a href="https://github.com/Z3Prover/z3/releases">this link</a>.</p></li>
 <li><p>Install <code>stack</code> from <a href="https://docs.haskellstack.org/en/stable/README/">this link</a>.</p></li>
 <li><p>Clone and build LiquidHaskell:</p>
-<pre><code>$ git clone -b popl18 --recursive git@github.com:ucsd-progsys/liquidhaskell.git
+
+<p><code>
+$ git clone -b popl18 --recursive git@github.com:ucsd-progsys/liquidhaskell.git
+</code></p>
+
+<p><code>
 $ cd liquidhaskell
-$ stack install</code></pre></li>
+</code></p>
+
+<p><code>
+$ stack install
+</code></p></li>
 <li><p>Clone the Benchmarks:</p>
-<pre><code>$ git clone -b popl18 --recursive https://github.com/iu-parfunc/verified-instances.git
-$ git clone -b popl18 --recursive https://github.com/iu-parfunc/lvars.git</code></pre></li>
+
+<p><code>
+$ git clone -b popl18 --recursive https://github.com/iu-parfunc/verified-instances.git
+</code></p>
+
+<p><code>
+$ git clone -b popl18 --recursive https://github.com/iu-parfunc/lvars.git
+</code></p></li>
 </ol></li>
-<li><p><strong>Step 2:</strong> Execute Benchmarks: After getting liquidhaskell and the benchmarks via the above, you can now run it on the benchmarks.</p>
-<ul>
-<li><p><strong>Run Individual Files:</strong> Now you can run specific benchmarks in that shell, e.g. to check the files <code>Unification.hs</code> and <code>Solver.hs</code>, do:</p>
+</ul>
+
+<h3>Run Benchmarks</h3>
+
+<p>After getting Liquid Haskell and the benchmarks via the above,
+you can now run Liquid Haskell on the benchmarks.</p>
+
+<h4>Run Individual Files</h4>
+
+<p>Now you can run specific benchmarks in that shell, e.g. 
+to check the files <code>Unification.hs</code> and <code>Solver.hs</code>, do:</p>
+
 <pre><code>$ stack exec -- liquid benchmarks/popl18/Overview.lhs
 $ stack exec -- liquid benchmarks/popl18/LawsForLists.lhs
 $ stack exec -- liquid benchmarks/popl18/NaturalDeduction.lhs
 $ stack exec -- liquid benchmarks/popl18/ple/pos/Unification.hs
-$ stack exec -- liquid benchmarks/popl18/ple/pos/Solver.hs</code></pre></li>
-<li><p><strong>Run Benchmarks:</strong> The benchmarks described in the paper are located in the following directories:</p>
-<p>1a. <a href="https://github.com/ucsd-progsys/liquidhaskell/tree/popl18/benchmarks/popl18/nople">no-PLE</a></p>
-<p>1b. <a href="https://github.com/ucsd-progsys/liquidhaskell/tree/popl18/benchmarks/popl18/ple">PLE</a></p>
-<ol start="2" style="list-style-type: decimal">
-<li><p><a href="https://github.com/iu-parfunc/verified-instances/tree/popl18">class-par-laws</a></p></li>
-<li><p><a href="https://github.com/iu-parfunc/lvars/tree/popl18">det-par-laws</a></p></li>
-</ol></li>
-</ul></li>
-</ul>
-<p>To run liquidhaskell on each of the above benchmarks, respectively do:</p>
-<ol style="list-style-type: decimal">
-<li><pre><code>$ cd liquidhaskell
-$ stack test liquidhaskell --test-arguments=&quot;-p nople&quot;
-$ stack test liquidhaskell --test-arguments=&quot;-p ple&quot;  </code></pre></li>
-<li><pre><code>$ cd verified-instances ; make DOCKER=false TIMEIT=true</code></pre></li>
-<li><pre><code>$ cd lvars ; make DOCKER=false TIMEIT=true</code></pre></li>
+$ stack exec -- liquid benchmarks/popl18/ple/pos/Solver.hs
+</code></pre>
+
+<h4>Run All the Benchmarks of Table 1</h4>
+
+<p>We split the benchmarks of Table 1 to 3 categories.</p>
+
+<ol>
+<li><p>To run the benchmarks in categories "Arithmetic", "Class-Laws", "Higher-Order", and "Functional Correctness" of Table 1 <em>with</em> PLE <em>with</em> and <em>without</em> PLE, respectively, do:</p>
+
+<p>$ cd liquidhaskell</p>
+
+<p>$ stack test liquidhaskell --test-arguments="-p with_ple"</p>
+
+<p>$ stack test liquidhaskell --test-arguments="-p without_ple"</p></li>
+<li><p>To run the benchmarks in "Conc. Sets" <em>with</em> and <em>without</em> PLE, respectively, do:</p>
+
+<p>$ cd lvars ; make DOCKER=false TIMEIT=true PLE=true</p>
+
+<p>$ cd lvars ; make DOCKER=false TIMEIT=true PLE=false</p></li>
+<li><p>Finally, run the benchmarks in "n-body" &amp; "Par. Reducers" categories, <em>with</em> and <em>without</em> PLE, respectively, do:</p>
+
+<p>$ cd verified-instances ; make DOCKER=false TIMEIT=true PLE=true</p>
+
+<p>$ cd verified-instances ; make DOCKER=false TIMEIT=true PLE=false</p></li>
 </ol>
+
+<h2><a name="source-files"></a>Source Files</h2>
+
+<p>The source files of Benchmarks in Table 1 can be located as follows.</p>
+
+<p><style>
+table {
+    border-collapse: collapse;
+    font-family: arial, sans-serif;
+    text-align: left;
+}</p>
+
+<p>td, th {
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+    text-align: left;
+}
+</style></p>
+
+<table>
+  <tr>
+    <th>Category</th>
+    <th><i>Without</i> PLE Search&nbsp;&nbsp;</th>
+    <th><i>With</i> PLE Search&nbsp;&nbsp;</th>
+  </tr>
+  <tr>
+    <td>Arithmetic</td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/Fibonacci.hs">Fibonacci.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/Fibonacci.hs">Fibonacci.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/Ackermann.hs">Ackermann.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/Ackermann.hs">Ackermann.hs</a></td>
+  </tr>
+  <tr>
+    <td>Class Laws</td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/MonoidMaybe.hs">MonoidMaybe.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/MonoidMaybe.hs">MonoidMaybe.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/MonoidList.hs">MonoidList.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/MonoidList.hs">MonoidList.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/FunctorId.hs">FunctorId.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/FunctorId.hs">FunctorId.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/FunctorMaybe.hs">FunctorMaybe.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/FunctorMaybe.hs">FunctorMaybe.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/FunctorList.hs">FunctorList.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/FunctorList.hs">FunctorList.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/ApplicativeId.hs">ApplicativeId.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/ApplicativeId.hs">ApplicativeId.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/ApplicativeMaybe.hs">ApplicativeMaybe.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/ApplicativeMaybe.hs">ApplicativeMaybe.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/ApplicativeList.hs">ApplicativeList.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/ApplicativeList.hs">ApplicativeList.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/MonadId.hs">MonadId.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/MonadId.hs">MonadId.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/MonadMaybe.hs">MonadMaybe.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/MonadMaybe.hs">MonadMaybe.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/MonadList.hs">MonadList.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/MonadList.hs">MonadList.hs</a></td>
+  </tr>
+  <tr>
+    <td>Higher-Order</td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/FoldrUniversal.hs">FoldrUniversal.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/FoldrUniversal.hs">FoldrUniversal.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/NaturalDeduction.hs">NaturalDeduction.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/NaturalDeduction.hs">NaturalDeduction.hs</a></td>
+  </tr>
+  <tr>
+    <td>Func. Correct</td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/Solver.hs">Solver.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/Solver.hs">Solver.hs</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/without_ple/pos/Unification.hs">Unification.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/ucsd-progsys/liquidhaskell/popl18/benchmarks/popl18/with_ple/pos/Unification.hs">Unification.hs</a></td>
+  </tr>
+  <tr>
+    <td> Conc-Sets</td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/iu-parfunc/lvars/popl18/src/lvish/tests/verified/SumNoPLE.hs">SumNoPLE.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/iu-parfunc/lvars/popl18/src/lvish/tests/verified/Sum.hs">Sum.hs</a></td>
+  </tr>
+  <tr>
+    <td> N-Body</td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/iu-parfunc/verified-instances/popl18/examples/nbody/allpairs_verifiedNoPLE.hs">allpairs_verifiedNoPLE.hs</a></td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/iu-parfunc/verified-instances/popl18/examples/nbody/allpairs_verified.hs">allpairs_verified.hs</a></td>
+  </tr>
+  <tr>
+    <td> Par-Reducers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/iu-parfunc/verified-instances/popl18/examples/dpj/IntegerSumReduction2NoPLE.hs">IntegerSumReduction2NoPLE.hs</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td><a target="_blank" href="https://raw.githubusercontent.com/iu-parfunc/verified-instances/popl18/examples/dpj/IntegerSumReduction2.hs">IntegerSumReduction2.hs</a></td>
+  </tr>
+</table>
