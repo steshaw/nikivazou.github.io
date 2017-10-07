@@ -31,11 +31,11 @@ the Liquid Haskell server hosted at <a href="http://goto.ucsd.edu:8090/">http://
 
 <h2><a name="benchmarks"></a> Running Benchmarks</h2>
 
-<p>To run the benchmarks, you need to</p>
+<p>To run the benchmarks, you can</p>
 
 <ol>
-<li><strong>Get LiquidHaskell</strong> via Docker or Source. </li>
-<li><strong>Run</strong> the individual benchmarks.</li>
+<li>Use a Docker image </li>
+<li>Install Liquid Haskell from source [preferred]</li>
 </ol>
 
 <h3>Build Option 1: Docker</h3>
@@ -59,8 +59,7 @@ $ docker run -it parfunc/popl18-lh-prover-artifact bash
 
 <p>You can install Liquid Haskell on your own machine from github. </p>
 
-<ul>
-<li><p><strong>Step 1:</strong> Download &amp; Install:</p>
+<h4>Download &amp; Install:</h4>
 
 <ol>
 <li><p>Install <code>z3</code> from <a href="https://github.com/Z3Prover/z3/releases">this link</a>.</p></li>
@@ -87,15 +86,14 @@ $ git clone -b popl18 --recursive https://github.com/iu-parfunc/verified-instanc
 <p><code>
 $ git clone -b popl18 --recursive https://github.com/iu-parfunc/lvars.git
 </code></p></li>
-</ol></li>
-</ul>
+</ol>
 
-<h3>Run Benchmarks</h3>
+<h4>Run Benchmarks</h4>
 
 <p>After getting Liquid Haskell and the benchmarks via the above,
 you can now run Liquid Haskell on the benchmarks.</p>
 
-<h4>Run Individual Files</h4>
+<h5>Run Individual Files</h5>
 
 <p>Now you can run specific benchmarks in that shell, e.g. 
 to check the files <code>Unification.hs</code> and <code>Solver.hs</code>, do:</p>
@@ -107,7 +105,7 @@ $ stack exec -- liquid benchmarks/popl18/ple/pos/Unification.hs
 $ stack exec -- liquid benchmarks/popl18/ple/pos/Solver.hs
 </code></pre>
 
-<h4>Run All the Benchmarks of Table 1</h4>
+<h5>Run All the Benchmarks of Table 1</h5>
 
 <p>We split the benchmarks of Table 1 to 3 categories.</p>
 

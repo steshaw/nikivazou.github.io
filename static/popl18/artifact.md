@@ -32,10 +32,10 @@ the Liquid Haskell server hosted at [http://goto.ucsd.edu:8090/](http://goto.ucs
 
 ## <a name="benchmarks"></a> Running Benchmarks
 
-To run the benchmarks, you need to
+To run the benchmarks, you can
 
-1. **Get LiquidHaskell** via Docker or Source. 
-2. **Run** the individual benchmarks.
+1. Use a Docker image 
+2. Install Liquid Haskell from source [preferred]
 
 
 ### Build Option 1: Docker 
@@ -58,42 +58,42 @@ To run the benchmarks, you need to
 
 You can install Liquid Haskell on your own machine from github. 
 
-- **Step 1:** Download & Install:
+#### Download & Install:
 
-    1. Install `z3` from [this link](https://github.com/Z3Prover/z3/releases).
+1. Install `z3` from [this link](https://github.com/Z3Prover/z3/releases).
 
-    2. Install `stack` from [this link](https://docs.haskellstack.org/en/stable/README/).
+2. Install `stack` from [this link](https://docs.haskellstack.org/en/stable/README/).
 
-    3. Clone and build LiquidHaskell:
+3. Clone and build LiquidHaskell:
 
-        ```
-        $ git clone -b popl18 --recursive git@github.com:ucsd-progsys/liquidhaskell.git
-        ```
+    ```
+    $ git clone -b popl18 --recursive git@github.com:ucsd-progsys/liquidhaskell.git
+    ```
 
-        ```
-        $ cd liquidhaskell
-        ```
+    ```
+    $ cd liquidhaskell
+    ```
         
-        ```
-        $ stack install
-        ```
+    ```
+    $ stack install
+    ```
     
-    4. Clone the Benchmarks:
+4. Clone the Benchmarks:
 
-        ```
-        $ git clone -b popl18 --recursive https://github.com/iu-parfunc/verified-instances.git
-        ```
+    ```
+    $ git clone -b popl18 --recursive https://github.com/iu-parfunc/verified-instances.git
+    ```
 
-        ```
-        $ git clone -b popl18 --recursive https://github.com/iu-parfunc/lvars.git
-        ```
+    ```
+    $ git clone -b popl18 --recursive https://github.com/iu-parfunc/lvars.git
+    ```
 
-### Run Benchmarks
+#### Run Benchmarks
 
 After getting Liquid Haskell and the benchmarks via the above,
 you can now run Liquid Haskell on the benchmarks.
 
-#### Run Individual Files
+##### Run Individual Files
 
 Now you can run specific benchmarks in that shell, e.g. 
 to check the files `Unification.hs` and `Solver.hs`, do:
@@ -105,7 +105,7 @@ to check the files `Unification.hs` and `Solver.hs`, do:
     $ stack exec -- liquid benchmarks/popl18/ple/pos/Unification.hs
     $ stack exec -- liquid benchmarks/popl18/ple/pos/Solver.hs
 
-#### Run All the Benchmarks of Table 1
+##### Run All the Benchmarks of Table 1
 
 We split the benchmarks of Table 1 to 3 categories.
 
